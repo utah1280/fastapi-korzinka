@@ -17,5 +17,13 @@ router = APIRouter(tags=["Categories"])
 async def get_categories(
     session: AsyncSession = Depends(db_helper.session_getter)
 ):
-    categories = await category.get_all_categories(session=session)
-    return categories
+    result = await category.get_all_categories(session=session)
+    return result
+
+@router.get("/get-category{id}", response_model=CategoryBase)
+async def get_category(
+    id,
+    session: AsyncSession = Depends(db_helper.session_getter)
+):
+    result = await category.get_category_by_id(id, session=session)
+    return result
