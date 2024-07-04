@@ -24,7 +24,7 @@ def upgrade() -> None:
         "categories",
         sa.Column("id", sa.Integer(), nullable=False),
         sa.Column("label", sa.String(), nullable=False),
-        sa.Column("created_at", sa.DateTime(), nullable=False),
+        sa.Column("created_at", sa.DateTime(), nullable=False, server_default=sa.func.now()),
         sa.PrimaryKeyConstraint("id"),
         sa.UniqueConstraint("label"),
     )
@@ -36,7 +36,7 @@ def upgrade() -> None:
         sa.Column("email", sa.String(), nullable=False),
         sa.Column("address", sa.String(), nullable=False),
         sa.Column("category_id", sa.Integer(), nullable=False),
-        sa.Column("created_at", sa.DateTime(), nullable=False),
+        sa.Column("created_at", sa.DateTime(), nullable=False, server_default=sa.func.now()),
         sa.ForeignKeyConstraint(
             ["category_id"],
             ["categories.id"],
