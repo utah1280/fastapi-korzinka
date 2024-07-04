@@ -15,8 +15,14 @@ class DatabaseConfig(BaseModel):
     pool_size: int = 50
     max_overflow: int = 10
 
+class ApiV1Prefix(BaseModel):
+    prefix: str = "/v1"
+    categories: str = "/categories"
+    contacts: str = "/contacts"
+
 class ApiPrefix(BaseModel):
     prefix: str = "/api"
+    v1: ApiV1Prefix = ApiV1Prefix()
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
