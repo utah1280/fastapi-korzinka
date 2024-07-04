@@ -11,7 +11,7 @@ from core.models import Base
 async def lifespan(app: FastAPI):
     # Startup
     async with db_helper.engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
+        await conn.run_sync(Base.metadata.drop_all)
     yield
     # Shutdown
     await db_helper.dispose()
