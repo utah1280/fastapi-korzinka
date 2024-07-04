@@ -1,0 +1,12 @@
+services:
+
+  postgres:
+    container_name: postgres
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: korzinka
+    ports:
+      - "5432:5432"
