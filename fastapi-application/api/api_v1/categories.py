@@ -22,8 +22,33 @@ async def get_categories(
 
 @router.get("/get-category{id}", response_model=CategoryBase)
 async def get_category(
-    id,
+    id: int,
     session: AsyncSession = Depends(db_helper.session_getter)
 ):
     result = await category.get_category_by_id(id, session=session)
     return result
+
+# !TODO
+@router.post("/new-category", response_model=CategoryBase)
+async def new_category(
+    label: str,
+    session: AsyncSession = Depends(db_helper.session_getter)
+):
+    pass
+
+# !TODO
+@router.patch("/update-category{id}", response_model=CategoryBase)
+async def update_category(
+    id: int,
+    label: str,
+    session: AsyncSession = Depends(db_helper.session_getter)
+):
+    pass
+
+# !TODO
+@router.delete("/delete-category{id}", response_model=CategoryBase)
+async def delete_category(
+    id,
+    session: AsyncSession = Depends(db_helper.session_getter)    
+):
+    pass
