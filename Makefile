@@ -1,6 +1,3 @@
-run:
-	python fastapi-application/main.py
-
 docker-up:
 	sudo docker-compose up -d
 
