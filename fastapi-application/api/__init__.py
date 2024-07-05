@@ -1,13 +1,18 @@
 from fastapi import APIRouter
-
-from .api_v1 import router as router_api_v1
-
 from core.config import settings
+from .contacts_api import contacts_router
+from .categories_api import categories_router
 
 router = APIRouter(
-    prefix=settings.api.prefix
+    prefix=settings.api.prefix,
 )
 
 router.include_router(
-    router_api_v1
+    categories_router,
+    prefix=settings.api.categories,
+)
+
+router.include_router(
+    contacts_router,
+    prefix=settings.api.contacts,
 )

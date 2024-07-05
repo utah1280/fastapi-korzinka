@@ -1,5 +1,7 @@
-from pydantic import BaseModel, PostgresDsn
-from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic import BaseModel
+from pydantic import PostgresDsn
+from pydantic_settings import BaseSettings
+from pydantic_settings import SettingsConfigDict
 
 from dotenv import load_dotenv
 load_dotenv()
@@ -15,24 +17,21 @@ class DatabaseConfig(BaseModel):
     pool_size: int = 50
     max_overflow: int = 10
 
-class ApiV1Prefix(BaseModel):
-    prefix: str = "/v1"
-    categories: str = "/categories"
-    contacts: str = "/contacts"
-
 class ApiPrefix(BaseModel):
     prefix: str = "/api"
-    v1: ApiV1Prefix = ApiV1Prefix()
+    categories: str = "/categories"
+    contacts: str = "/contacts"
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file=(".env.template", ".env"),
         case_sensitive=False,
         env_nested_delimiter="__",
-        env_prefix="APP_CONFIG__"
+        env_prefix="APP_CONFIG__",
     )
     run: RunConfig = RunConfig()
     api: ApiPrefix = ApiPrefix()
     db: DatabaseConfig
+
 
 settings = Settings()
