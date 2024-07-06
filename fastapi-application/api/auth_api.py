@@ -13,6 +13,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 auth_router = APIRouter(tags=["Auth"])
 
+# !TODO: Вынести в отдельный пакет
 async def validate_auth_login(
     user: user_schemas.UserLogin,
     session: AsyncSession = Depends(db_helper.session_getter)
