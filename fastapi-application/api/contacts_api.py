@@ -1,9 +1,12 @@
 from typing import List
 from fastapi import Query
+from fastapi import status
 from typing import Optional
 from fastapi import Depends
 from fastapi import APIRouter
+from fastapi import HTTPException
 from core.models import db_helper
+from crud import contact_crud as c
 from core.schemas import contact_schemas
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -28,10 +31,14 @@ async def get_contacts_by_id(
 
 @contacts_router.post("/new-contact", response_model=contact_schemas.ContactResponse)
 async def add_new_contact(
-    new_contaact: contact_schemas.ContactCreateBody,
+    new_contact: contact_schemas.ContactCreateBody,
     session: AsyncSession = Depends(db_helper.session_getter)
 ):
-    pass
+    result = await c.add_new_contact(new_contact, session=session)
+    if isinstance(result, str):
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=result)
+    
+    return result
 
 @contacts_router.patch("/update-contact/{id}", response_model=contact_schemas.ContactIdResponse)
 async def update_contact(
