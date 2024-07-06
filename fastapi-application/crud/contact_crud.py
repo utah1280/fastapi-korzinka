@@ -1,4 +1,3 @@
-from sqlalchemy import text
 from sqlalchemy import select
 from sqlalchemy import delete
 from core.models import Contacts
@@ -14,10 +13,27 @@ async def get_all_contacts(
     order: str | None,
     session: AsyncSession
 ):
-    pass
+    query = select(Contacts).options(joinedload(Contacts.category)).order_by(Contacts.id)
+
+    # !TODO - Filtering
+    # if name:
+    #     query.where(Contacts.name.ilike(f"%{name}%"))
+    # if email:
+    #     query.where(Contacts.email.ilike(f"%{email}"))
+
+    result = await session.execute(query)
+    contacts = result.scalars().all()
+
+    return [contact_schemas.ContactResponse.model_validate(contact) for contact in contacts]
 
 async def get_contact_by_id(id: int, session: AsyncSession):
-    pass
+    query = select(Contacts).options(joinedload(Contacts.category)).where(Contacts.id == id)
+    contact = await session.scalar(query)
+
+    if contact is None:
+        return "error: contact with given id is not found"
+    
+    return contact_schemas.ContactResponse.model_validate(contact)
 
 async def add_new_contact(
     new_contact: contact_schemas.ContactCreateBody,
@@ -47,7 +63,7 @@ async def add_new_contact(
     
     query = select(Contacts).options(joinedload(Contacts.category)).where(Contacts.id == new.id)
     result = await session.execute(query)
-    contact = result.scalar_one()
+    contact = result.scalar()
 
     return contact_schemas.ContactResponse.model_validate(contact)
     
@@ -60,7 +76,42 @@ async def update_contact(
     category: str | None,
     session: AsyncSession
 ):
-    pass
+    if email:
+        query = select(Contacts).where(Contacts.email == email, Contacts.id != id)
+        result = await session.scalar(query)
+        if result is not None:
+            return "error: contact with given email already exists"
+
+    query = select(Contacts).options(joinedload(Contacts.category)).where(Contacts.id == id)
+    result = await session.execute(query)
+    contact = result.scalar_one_or_none()
+
+    if contact is None:
+        return "error: contact with given id not found"
+
+    if name:
+        contact.name = name
+    if phone:
+        contact.phone = phone
+    if email:
+        contact.email = email
+    if address:
+        contact.address = address
+
+    if category:
+        query = select(Categories).where(Categories.label == category)
+        category_result = await session.scalar(query)
+        if category_result is None:
+            return "error: category with given name not found"
+        contact.category_id = category_result.id
+
+    await session.commit()
+
+    return {"id": id}
 
 async def delete_contact(id: int, session: AsyncSession):
-    pass
+    query = delete(Contacts).where(Contacts.id == id)
+    result = await session.execute(query)
+    await session.commit()
+    
+    return {"id": id}

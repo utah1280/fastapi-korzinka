@@ -26,8 +26,8 @@ async def add_new_category(label: str, session: AsyncSession):
         session.add(new)
         await session.commit()
         return new
-    else:
-        return "error: category already exists"
+    
+    return "error: category already exists"
     
 async def update_category(id: int, label: str, session: AsyncSession):
     query = select(Categories).where((Categories.label == label) )
@@ -47,13 +47,7 @@ async def update_category(id: int, label: str, session: AsyncSession):
     return "error: category with given id is not found"
 
 async def delete_category(id: int, session: AsyncSession):
-    query = select(Categories).where(Categories.id == id)
-    result = await session.execute(query)
-    
-    if result.scalar() is None:
-        return "error: category with given id is not found"
-
-    query = delete(Categories).where(Categories.id == id).returning(Categories.id)
+    query = delete(Categories).where(Categories.id == id)
     result = await session.execute(query)    
     await session.commit()
     

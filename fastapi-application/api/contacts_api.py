@@ -20,14 +20,19 @@ async def get_contacts(
     order: Optional[str] = Query(None, description="Sort by created time."),
     session: AsyncSession = Depends(db_helper.session_getter)
 ):
-    pass
+    result = await c.get_all_contacts(name=name, email=email, category=category, order=order, session=session)
+    return result
 
 @contacts_router.get("/get-contacts/{id}", response_model=contact_schemas.ContactResponse)
 async def get_contacts_by_id(
     id: int,
     session: AsyncSession = Depends(db_helper.session_getter)
 ):
-    pass
+    result = await c.get_contact_by_id(id, session=session)
+    if isinstance(result, str):
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=result)
+        
+    return result
 
 @contacts_router.post("/new-contact", response_model=contact_schemas.ContactResponse)
 async def add_new_contact(
@@ -50,11 +55,19 @@ async def update_contact(
     category: Optional[str] = Query(None),
     session: AsyncSession = Depends(db_helper.session_getter)
 ):
-    pass
+    result = await c.update_contact(id, name=name, phone=phone, email=email, address=address, category=category, session=session)
+    if isinstance(result, str):
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=result)
+    
+    return result
 
 @contacts_router.delete("/delete-contact/{id}", response_model=contact_schemas.ContactIdResponse)
 async def delete_contact(
     id: int,
     session: AsyncSession = Depends(db_helper.session_getter)
 ):
-    pass
+    result = await c.delete_contact(id, session=session)
+    if isinstance(result, str):
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=result)
+    
+    return result
