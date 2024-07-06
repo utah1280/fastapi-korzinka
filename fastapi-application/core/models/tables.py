@@ -16,3 +16,8 @@ class Contacts(Base):
     category_id: Mapped[int] = mapped_column(ForeignKey("categories.id"))
 
     category: Mapped[Categories] = relationship("Categories", back_populates="contacts")
+
+class Users(Base):
+    username: Mapped[str] = mapped_column(nullable=False)
+    email: Mapped[str] = mapped_column(nullable=False)
+    password: Mapped[str] = mapped_column(nullable=False)
