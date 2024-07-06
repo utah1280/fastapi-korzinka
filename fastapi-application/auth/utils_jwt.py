@@ -3,7 +3,13 @@ import bcrypt
 
 from core.config import settings
 
-from datetime import datetime, timedelta
+from datetime import datetime
+from datetime import timedelta
+
+from fastapi import Depends
+from fastapi.security import HTTPBearer
+from fastapi.security import HTTPAuthorizationCredentials
+http_bearer = HTTPBearer()
 
 
 
@@ -14,13 +20,15 @@ def encode_jwt(
     expire_minutes: int = settings.auth_jwt.access_token_expire_min,
 ):
     to_encode = payload.copy()
-    now = datetime.now()
-    expire = now + timedelta(minutes=expire_minutes)
+    
+    # !TODO
+    # now = datetime.now()
+    # expire = now + timedelta(minutes=expire_minutes)
 
-    to_encode.update(
-        exp=expire,
-        iat=now,
-    )
+    # to_encode.update(
+    #     exp=expire,
+    #     iat=now,
+    # )
     encoded = jwt.encode(to_encode, private_key, algorithm=algorithm)
     return encoded
 
@@ -43,3 +51,9 @@ def validate_password(password: str, hashed_bytes: bytes):
         hashed_password=hashed_bytes,
     )
 
+def get_payload(
+    credentials: HTTPAuthorizationCredentials = Depends(http_bearer)
+):
+    token = credentials.credentials
+    payload = decode_jwt(token)
+    return payload
