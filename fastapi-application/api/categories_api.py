@@ -22,10 +22,7 @@ async def get_categories_by_id(
     id: int,
     session: AsyncSession = Depends(db_helper.session_getter)
 ):
-    result = await c.get_category_by_id(id, session=session)
-    if isinstance(result, str):
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=result)
-    
+    result = await c.get_category_by_id(id, session=session)    
     return result
 
 @categories_router.post("/new-category", response_model=category_schemas.CategoryResponse)
@@ -34,8 +31,6 @@ async def add_new_category(
     session: AsyncSession = Depends(db_helper.session_getter)
 ):
     result = await c.add_new_category(label, session=session)
-    if isinstance(result, str):
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=result)
 
     return result
 
@@ -46,8 +41,6 @@ async def update_category(
     session: AsyncSession = Depends(db_helper.session_getter)
 ):
     result = await c.update_category(id, label=label, session=session)
-    if isinstance(result, str):
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=result)
     
     return result
 
@@ -57,7 +50,5 @@ async def delete_category(
     session: AsyncSession = Depends(db_helper.session_getter)
 ):
     result = await c.delete_category(id, session=session)
-    if isinstance(result, str):
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=result)
     
     return result

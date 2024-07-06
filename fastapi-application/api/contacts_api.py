@@ -29,8 +29,6 @@ async def get_contacts_by_id(
     session: AsyncSession = Depends(db_helper.session_getter)
 ):
     result = await c.get_contact_by_id(id, session=session)
-    if isinstance(result, str):
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=result)
         
     return result
 
@@ -40,8 +38,6 @@ async def add_new_contact(
     session: AsyncSession = Depends(db_helper.session_getter)
 ):
     result = await c.add_new_contact(new_contact, session=session)
-    if isinstance(result, str):
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=result)
     
     return result
 
@@ -56,8 +52,6 @@ async def update_contact(
     session: AsyncSession = Depends(db_helper.session_getter)
 ):
     result = await c.update_contact(id, name=name, phone=phone, email=email, address=address, category=category, session=session)
-    if isinstance(result, str):
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=result)
     
     return result
 
@@ -67,7 +61,5 @@ async def delete_contact(
     session: AsyncSession = Depends(db_helper.session_getter)
 ):
     result = await c.delete_contact(id, session=session)
-    if isinstance(result, str):
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=result)
     
     return result
