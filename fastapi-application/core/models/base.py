@@ -13,4 +13,4 @@ class Base(DeclarativeBase):
         return self.__name__.lower()
     
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    created_at: Mapped[DateTime] = mapped_column(DateTime, default=func.now(), nullable=False)
+    created_at: Mapped[DateTime] = mapped_column(DateTime, server_default=func.now(), nullable=False)
