@@ -23,4 +23,5 @@ class Contacts(Base):
 class Users(Base):
     username: Mapped[str] = mapped_column(nullable=False)
     email: Mapped[str] = mapped_column(nullable=False)
+    # !TODO: password: bytes
     password: Mapped[str] = mapped_column(nullable=False)

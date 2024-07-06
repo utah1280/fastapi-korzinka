@@ -37,6 +37,7 @@ async def hash_password(password: str):
     pwd_bytes: bytes = password.encode()
     return await bcrypt.hashpw(pwd_bytes, salt)
 
+# !TODO - hashed_bytes: bytes
 async def validate_password(password: str, hashed_bytes: str):
     return await bcrypt.checkpw(
         password.encode(),
