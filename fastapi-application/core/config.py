@@ -1,3 +1,4 @@
+from pathlib import Path
 from pydantic import BaseModel
 from pydantic import PostgresDsn
 from pydantic_settings import BaseSettings
@@ -22,6 +23,12 @@ class ApiPrefix(BaseModel):
     categories: str = "/categories"
     contacts: str = "/contacts"
 
+class AuthJWT(BaseModel):
+    private_key_path: Path = Path("fastapi-application/certs/jwt_private.pem")
+    public_key_path: Path = Path("fastapi-application/certs/jwt_public.pem")
+    algorithm: str = "RS256"
+    access_token_expire_min: int = 10
+
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file=(".env.template", ".env"),
@@ -31,6 +38,7 @@ class Settings(BaseSettings):
     )
     run: RunConfig = RunConfig()
     api: ApiPrefix = ApiPrefix()
+    auth_jwt: AuthJWT = AuthJWT()
     db: DatabaseConfig
 
 
