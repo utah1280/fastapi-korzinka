@@ -14,3 +14,6 @@ class UserLogin(BaseModel):
 class User(BaseModel):
     username: str
     email: str
+
+class UserSignIn(User):
+    password: str
