@@ -13,6 +13,11 @@ router = APIRouter(
 )
 
 router.include_router(
+    auth_router,
+    prefix="/auth",
+)
+
+router.include_router(
     categories_router,
     prefix=settings.api.categories,
 )
@@ -20,9 +25,4 @@ router.include_router(
 router.include_router(
     contacts_router,
     prefix=settings.api.contacts,
-)
-
-router.include_router(
-    auth_router,
-    prefix="/auth",
 )
