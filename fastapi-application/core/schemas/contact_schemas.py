@@ -2,6 +2,8 @@ from datetime import datetime
 from pydantic import BaseModel
 from .category_schemas import CategoryResponse
 
+
+
 class ContactCreateBody(BaseModel):
     name: str
     phone: str

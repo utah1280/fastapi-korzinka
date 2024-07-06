@@ -7,7 +7,7 @@ __all__ = (
 )
 
 from .db_helper import db_helper
-from.base import Base
+from .base import Base
 from .tables import Users
 from .tables import Contacts
 from .tables import Categories

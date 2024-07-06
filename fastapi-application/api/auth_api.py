@@ -11,6 +11,8 @@ from core.schemas import user_schemas
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+
+
 auth_router = APIRouter(tags=["Auth"])
 
 # !TODO: Вынести в отдельный пакет

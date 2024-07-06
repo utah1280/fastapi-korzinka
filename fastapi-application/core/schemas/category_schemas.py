@@ -1,6 +1,8 @@
 from datetime import datetime
 from pydantic import BaseModel
 
+
+
 class CategoryResponse(BaseModel):
     id: int
     label: str

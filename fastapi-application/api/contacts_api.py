@@ -1,14 +1,18 @@
 from typing import List
-from fastapi import Query
-from fastapi import status
 from typing import Optional
+
+from fastapi import Query
 from fastapi import Depends
 from fastapi import APIRouter
 from fastapi import HTTPException
-from core.models import db_helper
+
 from crud import contact_crud as c
+from core.models import db_helper
 from core.schemas import contact_schemas
+
 from sqlalchemy.ext.asyncio import AsyncSession
+
+
 
 contacts_router = APIRouter(tags=["Contacts"])
 

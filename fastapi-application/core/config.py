@@ -1,4 +1,5 @@
 from pathlib import Path
+
 from pydantic import BaseModel
 from pydantic import PostgresDsn
 from pydantic_settings import BaseSettings
@@ -6,6 +7,8 @@ from pydantic_settings import SettingsConfigDict
 
 from dotenv import load_dotenv
 load_dotenv()
+
+
 
 class RunConfig(BaseModel):
     host: str = "0.0.0.0"

@@ -1,11 +1,16 @@
-from sqlalchemy import select
-from sqlalchemy import delete
 from core.models import Contacts
 from core.models import Categories
-from sqlalchemy.orm import joinedload
 from core.schemas import contact_schemas
-from fastapi import HTTPException, status
+
+from fastapi import HTTPException
+from fastapi import status
+
+from sqlalchemy import select
+from sqlalchemy import delete
+from sqlalchemy.orm import joinedload
 from sqlalchemy.ext.asyncio import AsyncSession
+
+
 
 async def get_all_contacts(
     name: str | None,

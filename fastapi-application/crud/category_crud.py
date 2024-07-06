@@ -1,8 +1,13 @@
+from core.models import Categories
+
+from fastapi import HTTPException
+from fastapi import status
+
 from sqlalchemy import select
 from sqlalchemy import delete
-from core.models import Categories
-from fastapi import HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
+
+
 
 async def get_all_getegories(session: AsyncSession):
     query = select(Categories).order_by(Categories.id)

@@ -1,7 +1,11 @@
 import jwt
 import bcrypt
+
 from core.config import settings
+
 from datetime import datetime, timedelta
+
+
 
 def encode_jwt(
     payload: dict,

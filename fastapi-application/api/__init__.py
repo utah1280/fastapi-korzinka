@@ -1,8 +1,12 @@
 from fastapi import APIRouter
+
 from core.config import settings
+
 from .auth_api import auth_router
 from .contacts_api import contacts_router
 from .categories_api import categories_router
+
+
 
 router = APIRouter(
     prefix=settings.api.prefix,

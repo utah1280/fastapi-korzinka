@@ -1,7 +1,10 @@
 from .base import Base
+
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column, relationship
+
+
 
 class Categories(Base):
     label: Mapped[str] = mapped_column(nullable=False, unique=True)
