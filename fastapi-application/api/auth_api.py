@@ -42,3 +42,20 @@ async def login(
         access_token=token,
         token_type="Bearer"
     )
+
+@auth_router.post("/sign-in", response_model=user_schemas.User)
+async def sign_in(
+    user: user_schemas.UserSignIn,
+    session: AsyncSession = Depends(db_helper.session_getter)
+):
+    query = select(Users).where(Users.email == user.email)
+    result = await session.scalar(query)
+
+    if result is None:
+        hashed_password = a.hash_password(user.password)
+        new = Users(username=user.username, email=user.email, password=hashed_password)
+        session.add(new)
+        await session.commit()
+        return new
+    
+    raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="error: user with given email already exists")
